@@ -1,6 +1,4 @@
-import React, { useReducer } from 'react';
-
-const BlogContext = React.createContext();
+import createDataContext from './createDataContext';
 
 const blogReducer = (state, action) => {
   switch (action.type) {
@@ -11,19 +9,14 @@ const blogReducer = (state, action) => {
   }
 };
 
-// eslint-disable-next-line react/prop-types
-export const BlogProvider = ({ children }) => {
-  const [blogPosts, dispatch] = useReducer(blogReducer, []);
-
-  const addBlogPost = () => {
-    dispatch({ type: 'add_blogpost' });
-  };
-
-  return (
-    <BlogContext.Provider value={{ data: blogPosts, addBlogPost }}>
-      {children}
-    </BlogContext.Provider>
-  );
+const addBlogPost = dispatch => () => {
+  dispatch({ type: 'add_blogpost' });
 };
 
-export default BlogContext;
+export const { Context, Provider } = createDataContext(
+  blogReducer,
+  {
+    addBlogPost,
+  },
+  []
+);
