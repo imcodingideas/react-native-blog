@@ -14,6 +14,14 @@ const IndexScreen = ({ navigation }) => {
 
   useEffect(() => {
     getBlogPosts();
+
+    const listener = navigation.addListener('didFocus', () => {
+      getBlogPosts();
+    });
+
+    return () => {
+      listener.remove();
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
